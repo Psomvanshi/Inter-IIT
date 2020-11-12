@@ -36,7 +36,7 @@ if not connection_string:
     sitl = dronekit_sitl.start_default()
     connection_string = sitl.connection_string()
 
-firebase = firebase.FirebaseApplication('https://inter-iit-drdo-sase-2019.firebaseio.com/', None)
+firebase = firebase.FirebaseApplication('https://inter-iit-drdo-sase-2019.firebaseio.com/', None) #Initialise firebase
 count1 = 0
 obj_detected = False
 
@@ -189,12 +189,12 @@ def arm_and_takeoff(aTargetAltitude):
             break
         time.sleep(1)
 
-def update_firebase(count):
+def update_firebase(count):                             # Update firebase objects
     lat=vehicle.location.global_relative_frame.lat 
     lon=vehicle.location.global_relative_frame.lon 
-    firebase.put('/drone1/obj'+str(count),"lat",lat)
-    firebase.put('/drone1/obj'+str(count),"lng",lon)
-    firebase.put('/',"count1",count)   
+    firebase.put('/drone1/obj'+str(count),"lat",lat)  `# Enter lattitude of newly detected box
+    firebase.put('/drone1/obj'+str(count),"lng",lon)   # Enter longitude of newly detected box
+    firebase.put('/',"count1",count)                   # Update count1
 
         
 print('Create a new mission (for current location)')
@@ -203,10 +203,10 @@ move_left(final_height)
 ground_signal = 0
 
 while(ground_signal == 0):
-    ground_signal = firebase.get('/init1', None)
+    ground_signal = firebase.get('/init1', None)    # Proceed only when init1 button is presssed
     print("Waiting for ground signal...")  
     num_sat = int(str(vehicle.gps_0).split('=')[2])
-    firebase.put('/', "sat1", num_sat)
+    firebase.put('/', "sat1", num_sat)             # Update number of satellites detected
     time.sleep(1)
 
 #opening a file for writing
